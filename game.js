@@ -159,12 +159,18 @@ class Player extends Actor {
         // check if hit obstacle
         obstacles.forEach(obstacle => {
             if (tempRect.collideRect(obstacle)) {
-                dy = (obstacle.top - (this.y + this.height))
                 this.yspeed = 0
                 this.airborn = false                
-            } else {
-                
+
+                let diff = 0
+                if (dy < 0)
+                    diff = obstacle.bottom - tempRect.top
+                else if (dy > 0)
+                    diff = obstacle.top - tempRect.bottom    
+                dy += diff
             }
+
+            
         })
 
 
@@ -172,9 +178,6 @@ class Player extends Actor {
         
         this.x += dx
         this.y += dy
-    
-
-
 
         this.animate()
     }
