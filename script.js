@@ -104,9 +104,13 @@ class GameMap {
         this.mapData = []
         this.tileMap = new TileMap()
 
-        this.loaded = false
+        this.tileMapLoaded = false
+        this.gameDataLoaded = false
     }
 
+    isLoaded() {
+        return this.tileMapLoaded && this.gameDataLoaded
+    }
 
     loadGameMap() {
         let mapData = this.mapData;
@@ -120,7 +124,7 @@ class GameMap {
             'https://docs.google.com/spreadsheets/d/' + mapKey 
             + '/gviz/tq?tqx=out:csv&sheet=live';
         
-        httpGet(url, function(csv) {
+        httpGet(url, csv => {
             for (let row = 0; row < mapData.length; row++) {
                 mapData[row].splice(0, mapData[row].length);
             }
@@ -131,7 +135,6 @@ class GameMap {
 
             let rows = csv.split('\n');
             for (let row = 0; row < rows.length; row++) {
-                console.log(rows[row])
                 let cols = rows[row].split(',');
                 let datatopush = [];
                 for (let col = 0; col < cols.length; col++) {
@@ -139,16 +142,16 @@ class GameMap {
                     
                     let val = int(cols[col].split('"')[1])
                     if (isNaN(val)) continue
-                    console.log(val)
                     datatopush.push(val);
                 }
                 mapData.push(datatopush);
             }
             console.log(mapData);
+            this.gameDataLoaded = true
         });
 
         loadImage(base64img, tileMapImage => { 
-            this.loaded = true
+            this.tileMapLoaded = true
             this.tileMap.loadImage(tileMapImage, 16, 16)
             console.log('loaded')
         })
@@ -157,7 +160,7 @@ class GameMap {
 
     draw() {
         // draw gameMap
-        if (!this.loaded) return
+        //if (!this.isLoaded()) return
         let tileSize = 16
         for (let row = 0; row < this.mapData.length; row ++) {
             for (let col = 0; col < this.mapData[row].length; col ++) {
@@ -172,7 +175,52 @@ class GameMap {
 
 }
 
-class Actor {
+        
+class Rectangle {
+    constructor(x=0, y=0, width=0,height=0) {
+        this.x = x
+        this.y = y
+        this.width = width
+        this.height = height
+    }
+
+    get top() { return this.y }
+    get bottom() { return this.y + this.height }
+    get left() { return this.x }
+    get right() { return this.x + this.width }
+
+    set right(value) { this.x = value - this.width }
+    set left(value) { this.x = value }
+    set top(value) { this.y = value }
+    set bottom(value) { this.y = value - this.height }
+
+    collideRect(rect2) {
+        let rect1 = this
+        return rect1.right > rect2.left && 
+            rect1.left < rect2.right && 
+            rect1.bottom > rect2.top && 
+            rect1.top < rect2.bottom
+    }
+
+    collidePoint(x,y) {
+        if (x >= this.left &&        
+            x <= this.right &&   
+            y >= this.top &&   
+            y <= this.bottom) { 
+            return true;
+        }
+
+        return false;
+        
+    }
+    
+    draw() {
+        rect(this.x, this.y, this.width, this.height) //p5
+    }   
+}
+
+
+class Actor extends Rectangle {
 
     static get MOVEMENT_IDLE() { return 0 }
     static get MOVEMENT_RIGHT() { return 1 }
@@ -183,10 +231,8 @@ class Actor {
     static get DIRECTION_LEFT() { return -1 }
     
     constructor() {
-        this.x = 0
-        this.y = 0
-        this.width = 0
-        this.height = 0
+        super()
+
         this.image = null
 
         this.xspeed = 0
@@ -201,10 +247,9 @@ class Actor {
         
     }
 
-    draw() {
-        rect(this.x, this.y, this.width, this.height) //p5
-    }
+
 }
+
 
 class Player extends Actor {
 
@@ -225,11 +270,12 @@ class Player extends Actor {
         this.airborn = false
     }
 
-    update() {
+    update(obstacles) {
 
         // initialize round movement to previous velocity
         let dx = 0
         let dy = this.yspeed
+        let tempRect = 0
         
         if (Actor.MOVEMENT_RIGHT == this.movement) {
             dx = this.speed
@@ -245,6 +291,19 @@ class Player extends Actor {
             dx = WIDTH - (this.x + this.width)
         }
 
+        // check if hit obstacle
+        tempRect = new Rectangle(this.x + dx, this.y, this.width, this.height)
+
+        obstacles.forEach(obstacle => {
+            if (tempRect.collideRect(obstacle)) {
+                let diff = 0
+                if (dx < 0)
+                    diff = obstacle.right - tempRect.left
+                else if (dx > 0)
+                    diff = obstacle.left - tempRect.right    
+                dx += diff
+            }
+        })        
 
         // accelerate yspeed by gravity
         dy += Player.GRAVITY
@@ -262,12 +321,28 @@ class Player extends Actor {
             console.log("jump")
         }
 
+        // attempt to move by dy and check if hit obstacle
+        tempRect = new Rectangle(this.x, this.y + dy, this.width, this.height)
+
         // attempt to move by dy and check if hit the ground
-        if (this.y + this.height + dy > HEIGHT) {
-            dy = (HEIGHT - (this.y + this.height))
+        if (tempRect.bottom > HEIGHT) {
+            dy = (HEIGHT - this.bottom)
             this.yspeed = 0
             this.airborn = false
         } 
+        
+        // check if hit obstacle
+        obstacles.forEach(obstacle => {
+            if (tempRect.collideRect(obstacle)) {
+                dy = (obstacle.top - (this.y + this.height))
+                this.yspeed = 0
+                this.airborn = false                
+            } else {
+                
+            }
+        })
+
+
         this.yspeed = dy
         
         this.x += dx
@@ -293,13 +368,27 @@ class Keyboard {
 
 }
 
+class Tile extends Rectangle {
+    constructor(x, y, partNumber, tileMap) {
+        super(x,y,16,16)
+        this.partNumber = partNumber
+        this.tileMap = tileMap
+    }
+    
+    draw() {
+        this.tileMap.drawPart(this.partNumber, this.x, this.y)
+    }
+}
+
 class Game {
     constructor() {
         this.player = new Player()
         this.keyboard = new Keyboard()
         this.gameMap = new GameMap()
+        this.tiles = []
 
         this.showTileMap = false
+        this.showGameMap = false
     }
 
     preload() {
@@ -330,22 +419,38 @@ class Game {
 
     }
     
-    update() {        
-        this.player.update()        
+    update() {
+        if (!this.gameMap.isLoaded()) return
+        if (this.tiles.length <= 0) {
+            for (let row = 0; row < this.gameMap.mapData.length; row++) {
+                for (let col = 0; col < this.gameMap.mapData[0].length; col++) {
+                    let partNumber = this.gameMap.mapData[row][col]
+                    if (partNumber <= 0) continue
+                    this.tiles.push(new Tile(col*16,row*16,partNumber,this.gameMap.tileMap))
+                    
+                }
+            }
+
+        }
+        this.player.update(this.tiles)        
     }
 
     draw() {
         background(51); //p5
+        if (!this.gameMap.isLoaded()) return
+
 
         this.player.draw()
 
-        this.gameMap.draw()
+        this.tiles.forEach(tile => {
+            tile.draw()
+        })
+
+        //this.gameMap.draw()
 
         if (this.showTileMap)
             this.gameMap.tileMap.draw(100,100)        
-        
-        textSize(32);
-        text(this.player.airborn, 10, 30);
+
     }
 
     handleMouseClicked(x,y) {
@@ -379,23 +484,51 @@ function mouseClicked(event) { //p5
     game.handleMouseClicked(event.x,event.y)
 }
 
+function mousePressed() { //p5
+    ox = mouseX - rect1.x
+    oy = mouseY - rect1.y
+}
+
 function keyPressed(event) { //p5
     console.log(event)
     game.handleKeyPressed(event.keyCode)
 }
 
 function mouseDragged(event) { //p5
+    rect1.x = mouseX - ox
+    rect1.y = mouseY - oy
 }
 
 function mouseWheel(event) { //p5
+
 }
 
 function setup() { //p5
     createCanvas(WIDTH, HEIGHT) //p5
 }
 
+rect1 = new Rectangle(100,100,50,50)
+ox = 0
+oy = 0
 function draw() { //p5
     game.processInput()
     game.update()
     game.draw()
+
+    push()
+    textSize(32)
+    text(`t:${game.tiles.length}`,300,32*2)
+    text(`x:${rect1.x} y:${rect1.y} w:${rect1.width} h:${rect1.height}`,300,32*3)
+    t = 0
+    game.tiles.forEach(tile => {
+        t = tile
+        if (rect1.collideRect(tile)) {
+            fill('red')
+            return
+        }
+    })
+    text(`x:${t.x} y:${t.y} w:${t.width} h:${t.height}`,300,32*4)
+    
+    rect1.draw()
+    pop()
 }
