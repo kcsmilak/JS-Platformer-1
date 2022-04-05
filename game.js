@@ -1,6 +1,10 @@
 // depends on gamemap and tilemap?
 
         
+scriptkey = 'AKfycbwTh4x8aWvBrpyPae4T6OZPmcv1G0lXiSn8ll_xBHqeYlq8qvDvGHdeAOZpnZRg1CLy2g'
+let url = 'https://script.google.com/macros/s/' + scriptkey + '/exec?name=Test';
+
+
 
 
 class Game {
@@ -71,25 +75,16 @@ class Game {
 
         //this.gameMap.draw()
 
-        if (this.showTileMap)
-            this.gameMap.tileMap.draw(100,100)
 
         this.gameMap.tileMap.drawSelectedPart(WIDTH-16,0)
 
     }
 
-    handleMouseClicked(x,y) {
-        if (this.showTileMap)
-            this.gameMap.tileMap.handleMouseClicked(x-100,y-100)
+    mouseClicked(x,y) {
+
     }
 
-    handleKeyPressed(keyCode) {
-        if (keyCode == 84) {
-            console.log(`toggle map ${this.showTileMap}`)
-            if (this.showTileMap)
-                this.showTileMap = false
-            else
-                this.showTileMap = true
-        }        
+    keyPressed(keyCode) {
+       
     }
 }

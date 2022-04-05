@@ -67,7 +67,7 @@ class TileMap {
         this.drawPart(this.selectedPart,x,y)
     }
 
-    handleMouseClicked(x,y) {
+    mouseClicked(x,y) {
         if (x < 0 || y < 0) return
         if (x > this.tileMapImage.width || y > this.tileMapImage.height) return
         //console.log(`clicked in tileMap`)
