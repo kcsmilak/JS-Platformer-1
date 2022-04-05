@@ -1,6 +1,6 @@
 
-let WIDTH = 600
-let HEIGHT = 400
+let WIDTH = 640
+let HEIGHT = 480
 /**
  * APP
  */

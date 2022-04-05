@@ -7,6 +7,7 @@ class Player extends Actor {
     static get GRAVITY() { return 1 }
     static get GRAVITY_MAX() { return 10 }
 
+    static get JUMP_COOLDOWN_MAX() { return 70 }
 
     constructor() {
         super()
@@ -18,6 +19,7 @@ class Player extends Actor {
         this.speed = 8
         this.jumping = false
         this.airborn = false
+        this.jumpCooldown = 0
     }
 
     update(obstacles) {
@@ -34,12 +36,12 @@ class Player extends Actor {
         }
 
         // check for x boundry conditions
-        if (this.x + dx < 0 ) {
-            dx = 0 - this.x
-        }
-        if (this.x + dx + this.width > WIDTH) {
-            dx = WIDTH - (this.x + this.width)
-        }
+        //if (this.x + dx < 0 ) {
+        //    dx = 0 - this.x
+        //}
+        //if (this.x + dx + this.width > WIDTH) {
+        //    dx = WIDTH - (this.x + this.width)
+        //}
 
         // check if hit obstacle
         tempRect = new Rectangle(this.x + dx, this.y, this.width, this.height)
@@ -65,11 +67,13 @@ class Player extends Actor {
         }
 
         // modify y velocity if jumping (and not already in the air)
-        if (this.jumping && !this.airborn) {
+        if (this.jumping && !this.airborn && this.jumpCooldown == 0) {
             dy -= Player.JUMP_BOOST
             this.airborn = true
             console.log("jump")
+            this.jumpCooldown = Player.JUMP_COOLDOWN_MAX
         }
+        if (this.jumpCooldown > 0) this.jumpCooldown--
 
         // attempt to move by dy and check if hit obstacle
         tempRect = new Rectangle(this.x, this.y + dy, this.width, this.height)
