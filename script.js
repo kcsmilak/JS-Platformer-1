@@ -9,7 +9,44 @@ let url = 'https://script.google.com/macros/s/' + scriptkey + '/exec?name=Test';
 let modifier = 1;
 
 
+function handleMouseClicked(x,y) {
 
+    if (game.showTileMap) return
+    
+    let val = game.gameMap.tileMap.selectedPart
+
+
+    //console.log(val)
+
+    let rows = game.gameMap.mapData.length
+    let cols = game.gameMap.mapData[0].length
+
+    let tileSize = 16
+
+    let mapWidth = tileSize * cols
+    let mapHeight = tileSize * rows
+
+    if (x < 0 || x > mapWidth) return
+    if (y < 0 || y > mapHeight) return
+    
+    
+    let col = int((x / ( tileSize * cols) ) * cols)
+    let row = int((y / ( tileSize * rows) ) * rows)
+
+    let cur = game.gameMap.mapData[row][col] 
+    game.gameMap.mapData[row][col] = val
+    let set = game.gameMap.mapData[row][col] 
+
+    console.log(`row:${row} col:${col} x:${x} y:${y} rows:${rows} cols:${cols} cur:${cur} val:${val} set:${set}`)
+
+   
+    let postData = { x: col, y: row, val: val };
+    console.log(postData)
+    postData = JSON.stringify(postData)
+
+    $.post( url, { postData}, function( data ) {}, "json");
+        
+}
 
 /**
  * APP
@@ -21,32 +58,22 @@ function preload() { //p5
     game.preload()
 }
 
+
+
+
 function mouseClicked(event) { //p5
     console.log(event)
     game.handleMouseClicked(event.x,event.y)
 
-    
-    let val = game.gameMap.tileMap.selectedPart
+    handleMouseClicked(event.x, event.y)
 
-    console.log(val)
-    //gameMap.gameMap[row][col] = val
-
-    let col = 0
-    let row = 0
-
-    
-    let postData = { x: col, y: row, val: val };
-    postData = JSON.stringify(postData)
-
-    $.post( url, { postData}, function( data ) {}, "json");
-    
     // prevent default
     return false;    
 }
 
 function mousePressed() { //p5
-    ox = mouseX - rect1.x
-    oy = mouseY - rect1.y
+    //ox = mouseX - rect1.x
+    //oy = mouseY - rect1.y
 }
 
 function keyPressed(event) { //p5
@@ -55,8 +82,8 @@ function keyPressed(event) { //p5
 }
 
 function mouseDragged(event) { //p5
-    rect1.x = mouseX - ox
-    rect1.y = mouseY - oy
+    //rect1.x = mouseX - ox
+    //rect1.y = mouseY - oy
 }
 
 function mouseWheel(event) { //p5
@@ -67,14 +94,15 @@ function setup() { //p5
     createCanvas(WIDTH, HEIGHT) //p5
 }
 
-rect1 = new Rectangle(300,300,50,50)
-ox = 0
-oy = 0
+//rect1 = new Rectangle(300,300,50,50)
+//ox = 0
+//oy = 0
 function draw() { //p5
     game.processInput()
     game.update()
     game.draw()
 
+    /*
     push()
     textSize(32)
     text(`t:${game.tiles.length}`,300,32*2)
@@ -91,4 +119,5 @@ function draw() { //p5
     
     rect1.draw()
     pop()
+    */
 }

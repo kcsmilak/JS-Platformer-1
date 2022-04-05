@@ -1,7 +1,22 @@
 html, body {
   margin: 0;
   padding: 0;
+  background-color: black;
 }
+
 canvas {
   display: block;
+}
+
+canvasc {
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+canvasd {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border: 3px solid green;
 }
