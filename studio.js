@@ -1,6 +1,7 @@
 
-class Studio {
+class Studio extends Cartridge {
     constructor() {
+        super()
         this.keyboard = new Keyboard()
         this.gameMap = new GameMap()
 

@@ -11,6 +11,10 @@ function preload() { //p5
     jbox.preload()
 }
 
+function setup() { //p5
+    jbox.setup()
+}
+
 function mouseClicked(event) { //p5
     console.log(event)
     jbox.mouseClicked(event.x,event.y)

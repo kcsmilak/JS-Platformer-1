@@ -48,7 +48,7 @@ class GameMap {
                 }
                 mapData.push(datatopush);
             }
-            console.log(mapData);
+            //console.log(mapData);
             this.gameDataLoaded = true
         });
 

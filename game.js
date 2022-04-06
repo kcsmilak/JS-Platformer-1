@@ -1,14 +1,15 @@
 // depends on gamemap and tilemap?
 
 
-class Game {
+class Game extends Cartridge {
     constructor() {
+        super()
         this.player = new Player()
         this.keyboard = new Keyboard()
         this.gameMap = new GameMap()
         this.tiles = []
 
-        this.camera = new Rectangle(50,150,400,200)
+        this.camera = new Rectangle(this.player.x,this.player.y,400,300)
         
         this.showTileMap = false
         this.showGameMap = false
@@ -64,6 +65,17 @@ class Game {
         } else if (this.player.x + this.player.width > this.camera.x + this.camera.width - xmargin) {
             this.camera.x = this.player.x - this.camera.width + this.player.width + xmargin
         }
+
+        
+        let ymargin = 0
+        if (this.player.top < this.camera.top + 50) {
+            this.camera.top = this.player.top - 50
+        } else if (this.player.bottom > this.camera.bottom - 50) {
+            this.camera.bottom = this.player.bottom + 50
+        }
+        
+        if (this.camera.top < 0) this.camera.top = 0        
+        
         if (this.camera.x < 0) this.camera.x = 0
         let max = 900
         if (this.camera.right > max) this.camera.right = max        

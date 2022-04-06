@@ -7,6 +7,10 @@ class Cartridge {
         console.log('not implemented')
     }
 
+    setup() {
+        console.log('not implemented')
+    }
+
     processInput() {
         console.log('not implemented')
     }

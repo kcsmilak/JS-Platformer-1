@@ -1,7 +1,7 @@
 class Jbox {
     constructor() {
-        this.cartridge = new Loader()
         this.keyboard = new Keyboard()
+        this.loadLoader()
     }
 
     loadGame() {
@@ -13,23 +13,31 @@ class Jbox {
         this.cartridge = new Studio()
         this.preload()
     }
-    
+
+    loadLoader() {
+        this.cartridge = new Loader()
+        this.preload()
+    }
+
     preload() {
         this.cartridge.preload()
     }
-    
-    mouseClicked(x,y) {
-        console.log(event)
-        this.cartridge.mouseClicked(event.x,event.y)
-        
+
+    setup() {
+        this.cartridge.setup()
+    }
+
+    mouseClicked(x, y) {
+        this.cartridge.mouseClicked(x, y)
+
         // prevent default
-        return false;    
+        return false;
     }
-    
+
     mousePressed() {
-    
+
     }
-    
+
     keyPressed(keyCode) {
 
         if (this.keyboard.q) {
@@ -41,16 +49,16 @@ class Jbox {
             this.loadEditor()
             return
         }
-        
+
         this.cartridge.keyPressed(keyCode)
     }
-    
+
     mouseDragged() {
-    
+
     }
-    
-    mouseWheel() { 
-    
+
+    mouseWheel() {
+
     }
 
     processInput() {
@@ -60,8 +68,8 @@ class Jbox {
     update() {
         this.cartridge.update()
     }
-    
+
     draw() {
         this.cartridge.draw()
-    }    
+    }
 }

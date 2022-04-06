@@ -7,7 +7,7 @@ class Player extends Actor {
     static get GRAVITY() { return 1 }
     static get GRAVITY_MAX() { return 10 }
 
-    static get JUMP_COOLDOWN_MAX() { return 70 }
+    static get JUMP_COOLDOWN_MAX() { return 0 }
 
     constructor() {
         super()
@@ -20,6 +20,9 @@ class Player extends Actor {
         this.jumping = false
         this.airborn = false
         this.jumpCooldown = 0
+
+        this.animation = new AnimatedCharacter("Virtual Guy")
+        this.animation.load()
     }
 
     update(obstacles) {
@@ -109,6 +112,15 @@ class Player extends Actor {
         this.y += dy
 
         this.animate()
+        this.animation.update()
+    }
+
+    draw() {
+        super.draw()
+        push()
+        translate(this.x-8, this.y -16)
+        this.animation.draw()
+        pop()
     }
 
 }
