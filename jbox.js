@@ -1,6 +1,6 @@
 class Jbox {
     constructor() {
-        this.cartridge = new Game()
+        this.cartridge = new Loader()
         this.keyboard = new Keyboard()
     }
 

@@ -1,6 +1,6 @@
-class Cartridge {
+class Loader extends Cartridge {
     constructor() {
-        console.log('not implemented')
+        super()
     }
 
     preload() {
@@ -8,15 +8,16 @@ class Cartridge {
     }
 
     processInput() {
-        console.log('not implemented')
     }
 
     update() {
-        console.log('not implemented')
+
     }
 
     draw() {
-        console.log('not implemented')
+        fill(255)
+        textSize(32)
+        text('Loading...', 0, 32)
     }
 
     mouseClicked(x, y) {
