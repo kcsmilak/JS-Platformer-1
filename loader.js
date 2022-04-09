@@ -25,10 +25,16 @@ class AnimationRibbon {
         this.frame = (this.frame + 1) % this.frames
     }
 
-    draw() {
+    draw(flip = false) {
         if (!this.loaded) return
         let frameSize = this.image.width / this.frames
-        copy(this.image,this.frame * frameSize,0,frameSize,frameSize,0,0,frameSize,frameSize)
+        push()
+        if (flip) {
+            translate(frameSize,0)
+            scale(-1,1)
+        }
+        copy(this.image,this.frame * frameSize,0,frameSize,frameSize,0,0,frameSize,frameSize) //p5
+        pop()
     }
     
 }
@@ -43,6 +49,7 @@ class AnimatedCharacter {
         this.ribbons = {}
         this.activeRibbon = null
         this.character = character
+        this.flip = true
     }
 
     update() {
@@ -64,12 +71,13 @@ class AnimatedCharacter {
 
     draw() {
         if (this.activeRibbon == null) return
-        this.ribbons[this.activeRibbon].draw()
+        this.ribbons[this.activeRibbon].draw(this.flip)
     }
 
     setAnimation(animationType) {
         this.activeRibbon = animationType
     }
+
 }
 
 

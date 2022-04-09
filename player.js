@@ -22,7 +22,7 @@ class Player extends Actor {
         this.jumpCooldown = 0
 
         this.animation = new AnimatedCharacter("Virtual Guy")
-        this.animation.load()
+        this.animation.load(this.direction == Player.DIRECTION_LEFT)
     }
 
     update(obstacles) {
@@ -111,6 +111,18 @@ class Player extends Actor {
         this.x += dx
         this.y += dy
 
+        if (this.direction == Player.DIRECTION_RIGHT) {
+            this.animation.flip = false
+        } else {
+            this.animation.flip = true
+        }
+
+        if (this.dx != 0) {
+            //this.animation.setAnimation(Animation.IDLE)
+        } else {
+            //this.animation.setAnimation(Animation.IDLE)
+        }
+
         this.animate()
         this.animation.update()
     }
@@ -121,6 +133,10 @@ class Player extends Actor {
         translate(this.x-8, this.y -16)
         this.animation.draw()
         pop()
+        debug.log(`${this.x}`, "player.x")
+        debug.log(`${this.y}`, "player.y")
+        debug.log(`${this.direction}`, "player.d")
+
     }
 
 }
