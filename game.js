@@ -88,7 +88,7 @@ class Game extends Cartridge {
 
 
         push()
-        scale(1.5)
+        scale(2)
         translate(-this.camera.x, -this.camera.y)
         //
         this.player.draw()
@@ -104,6 +104,7 @@ class Game extends Cartridge {
         pop()
         pop()
 
+        debug.draw()
 
     }
 
