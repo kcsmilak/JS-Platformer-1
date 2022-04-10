@@ -74,8 +74,14 @@ class Game extends Cartridge {
         this.player.update(this.tiles, (x,y,dx) => {
             console.log(`fire x:${x} y:${y} dx:${dx}`)
             let bullet = new Bullet(x,y,dx+10)
-            this.enemies.push(bullet)
+            this.bullets.push(bullet)
         })
+
+        this.bullets.forEach(bullet => {
+            bullet.update()
+        })
+        this.bullets = this.bullets.filter(bullet => !bullet.deleteable)
+        debug.log(`${this.bullets.length}`,"bullets")
         
         this.enemies.forEach(enemy => {
             enemy.update(this.tiles, this.player)
@@ -125,6 +131,10 @@ class Game extends Cartridge {
             enemy.draw()
         })        
 
+        this.bullets.forEach(bullet => {
+            bullet.draw()
+        }) 
+        
         push()
         strokeWeight(3)
         fill(0,0,0,0)

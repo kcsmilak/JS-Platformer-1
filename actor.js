@@ -21,6 +21,8 @@ class Actor extends Rectangle {
         this.movement = Actor.MOVEMENT_IDLE
         this.direction = Actor.DIRECTION_RIGHT
         
+        this.deleteable = false
+        
     }
 
     animate() {

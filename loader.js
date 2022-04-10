@@ -17,6 +17,8 @@ class Loader extends Cartridge {
         this.loaded = false
         //this.ribbon = new AnimationRibbon()
         this.character = new AnimatedCharacter("Virtual Guy")
+        this.values = []
+        this.values.push(2, 4, 5, 6)
     }
 
     preload() {
@@ -35,6 +37,19 @@ class Loader extends Cartridge {
         */
         this.character.load()
         this.loaded = true
+        
+        console.log(this.values)
+        
+        this.values.forEach( value => {
+            console.log(value)
+        })
+
+        this.values = this.values.filter( value => 
+            value % 2 != 0
+        )        
+        
+        console.log(this.values)
+    
     }
 
     processInput() {

@@ -6,12 +6,14 @@ class Bullet extends Actor {
         this.width = 10
         this.height = 10
         this.xspeed = xspeed
-        this.lifetime = 100
+        this.lifetime = 30
     }
     
     update() {
         this.x += this.xspeed
         this.lifetime--
+        if (this.lifetime <= 0) this.deleteable = true
+        
     }
     
     draw() {
