@@ -5,6 +5,7 @@ class Game extends Cartridge {
     constructor() {
         super()
         this.player = new Player()
+        this.enemies = []
         this.keyboard = new Keyboard()
         this.gameMap = new GameMap()
         this.tiles = []
@@ -13,6 +14,8 @@ class Game extends Cartridge {
         
         this.showTileMap = false
         this.showGameMap = false
+        
+        this.enemies.push(new Enemy())
     }
 
     preload() {
@@ -57,6 +60,10 @@ class Game extends Cartridge {
 
         }
         this.player.update(this.tiles)
+        
+        this.enemies.forEach(enemy => {
+            enemy.update(this.tiles, this.player)
+        })
 
 
         let xmargin = 100
@@ -83,12 +90,13 @@ class Game extends Cartridge {
     }
 
     draw() {
+        frameRate(40)
         background(51); //p5
         if (!this.gameMap.isLoaded()) return
 
 
         push()
-        scale(2)
+        scale(1.5)
         translate(-this.camera.x, -this.camera.y)
         //
         this.player.draw()
@@ -96,6 +104,10 @@ class Game extends Cartridge {
         this.tiles.forEach(tile => {
             tile.draw()
         })
+        
+        this.enemies.forEach(enemy => {
+            enemy.draw()
+        })        
 
         push()
         strokeWeight(3)

@@ -5,9 +5,10 @@ let HEIGHT = 480
  * APP
  */
 
-jbox = new Jbox()
+jbox = null//new Jbox()
 
 function preload() { //p5
+    jbox = new Jbox()
     jbox.preload()
 }
 

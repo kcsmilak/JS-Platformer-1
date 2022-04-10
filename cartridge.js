@@ -1,35 +1,34 @@
 class Cartridge {
     constructor() {
-        console.log('not implemented')
     }
 
     preload() {
-        console.log('not implemented')
+        console.log('preload not implemented')
     }
 
     setup() {
-        console.log('not implemented')
+        console.log('setup not implemented')
     }
 
     processInput() {
-        console.log('not implemented')
+        console.log('processInput not implemented')
     }
 
     update() {
-        console.log('not implemented')
+        console.log('update not implemented')
     }
 
     draw() {
-        console.log('not implemented')
+        console.log('draw not implemented')
     }
 
     mouseClicked(x, y) {
-        console.log('not implemented')
+        console.log('mouseClicked not implemented')
 
     }
 
     keyPressed(keyCode) {
-        console.log('not implemented')
+        console.log('keyPressed not implemented')
 
     }
 }

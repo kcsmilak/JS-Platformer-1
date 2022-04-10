@@ -26,6 +26,8 @@ class GameMap {
             'https://docs.google.com/spreadsheets/d/' + mapKey 
             + '/gviz/tq?tqx=out:csv&sheet=live';
         
+        url = "mapdata.csv"
+        
         httpGet(url, csv => {
             for (let row = 0; row < mapData.length; row++) {
                 mapData[row].splice(0, mapData[row].length);
@@ -40,15 +42,21 @@ class GameMap {
                 let cols = rows[row].split(',');
                 let datatopush = [];
                 for (let col = 0; col < cols.length; col++) {
-                    //console.log(cols[col])
+                    let val = cols[col]
+                    //console.log(val)
                     
-                    let val = int(cols[col].split('"')[1])
+                    if (val.includes('"')) {
+                        val = int(cols[col].split('"')[1])
+                    } else {
+                        //console.log("updating...")
+                        if (val > 0) val++
+                    }
                     if (isNaN(val)) continue
                     datatopush.push(val);
                 }
                 mapData.push(datatopush);
             }
-            //console.log(mapData);
+            //console.table(mapData);
             this.gameDataLoaded = true
         });
 
