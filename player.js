@@ -8,7 +8,9 @@ class Player extends Actor {
     static get GRAVITY_MAX() { return 10 }
 
     static get JUMP_COOLDOWN_MAX() { return 0 }
+    static get SHOOT_COOLDOWN_MAX() { return 10 }
 
+    
     constructor() {
         super()
 
@@ -19,13 +21,21 @@ class Player extends Actor {
         this.speed = 4
         this.jumping = false
         this.airborn = false
-        this.jumpCooldown = 0
+        this.shooting = false
+        this.jumpCooldown = 10
+        this.shootCooldown = 0
 
         this.animation = new AnimatedCharacter("Virtual Guy")
         this.animation.load(this.direction == Player.DIRECTION_LEFT)
     }
 
-    update(obstacles) {
+    update(obstacles, fireBullet) {
+        
+        if (this.shootCooldown > 0) this.shootCooldown--
+
+        if (this.jumpCooldown > 0) this.jumpCooldown--        
+        
+
 
         // initialize round movement to previous velocity
         let dx = 0
@@ -124,6 +134,12 @@ class Player extends Actor {
         
         this.x += dx
         this.y += dy
+        
+        if (this.shooting && this.shootCooldown == 0) {
+            console.log("shoot!")
+            this.shootCooldown = Player.SHOOT_COOLDOWN_MAX
+            fireBullet(this.x, this.y, dx)
+        }        
 
         if (this.direction == Player.DIRECTION_RIGHT) {
             this.animation.flip = false

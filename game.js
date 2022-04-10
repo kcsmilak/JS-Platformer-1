@@ -4,11 +4,13 @@
 class Game extends Cartridge {
     constructor() {
         super()
-        this.player = new Player()
-        this.enemies = []
         this.keyboard = new Keyboard()
         this.gameMap = new GameMap()
+
+        this.player = new Player()
+        this.enemies = []
         this.tiles = []
+        this.bullets = []
 
         this.camera = new Rectangle(this.player.x,this.player.y,400,300)
         
@@ -42,8 +44,18 @@ class Game extends Cartridge {
         } else {
             this.player.jumping = false
         }
+        
+        if (this.keyboard.space) {
+            this.player.shooting = true
+        } else {
+            this.player.shooting = false
+        }
+        
 
 
+    }
+    
+    fireBullet(x, y, dx) {
     }
     
     update() {
@@ -59,7 +71,11 @@ class Game extends Cartridge {
             }
 
         }
-        this.player.update(this.tiles)
+        this.player.update(this.tiles, (x,y,dx) => {
+            console.log(`fire x:${x} y:${y} dx:${dx}`)
+            let bullet = new Bullet(x,y,dx+10)
+            this.enemies.push(bullet)
+        })
         
         this.enemies.forEach(enemy => {
             enemy.update(this.tiles, this.player)
