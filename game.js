@@ -71,14 +71,21 @@ class Game extends Cartridge {
             }
 
         }
-        this.player.update(this.tiles, (x,y,dx) => {
+        this.player.update(this.tiles, this.enemies, 
+            (enemy) => {
+                console.log("LOST")
+            },
+            (x,y,dx) => {
             console.log(`fire x:${x} y:${y} dx:${dx}`)
             let bullet = new Bullet(x,y,dx+10)
             this.bullets.push(bullet)
         })
 
         this.bullets.forEach(bullet => {
-            bullet.update()
+            bullet.update(this.tiles, this.enemies, (enemy) => {
+                console.log("hit enemy!")
+                enemy.deleteable = true
+            })
         })
         this.bullets = this.bullets.filter(bullet => !bullet.deleteable)
         debug.log(`${this.bullets.length}`,"bullets")
@@ -86,6 +93,7 @@ class Game extends Cartridge {
         this.enemies.forEach(enemy => {
             enemy.update(this.tiles, this.player)
         })
+        this.enemies = this.enemies.filter(enemy => !enemy.deleteable)
 
 
         let xmargin = 100

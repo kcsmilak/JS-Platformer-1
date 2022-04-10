@@ -9,16 +9,29 @@ class Bullet extends Actor {
         this.lifetime = 30
     }
     
-    update() {
+    update(obstacles, enemies, hitEnemy) {
         this.x += this.xspeed
         this.lifetime--
         if (this.lifetime <= 0) this.deleteable = true
+        
+        obstacles.forEach(obstacle => {
+            if (this.collideRect(obstacle)) {
+                this.deleteable = true
+            }
+        })         
+        
+        enemies.forEach(enemy => {
+            if (this.collideRect(enemy)) {
+                this.deleteable = true
+                hitEnemy(enemy)
+            }
+        })
         
     }
     
     draw() {
         if (this.lifetime < 0) return
-        console.log(`alive x:${this.x} y:${this.y} xs:${this.xspeed}`)
+        //console.log(`alive x:${this.x} y:${this.y} xs:${this.xspeed}`)
         super.draw()
     }
 }

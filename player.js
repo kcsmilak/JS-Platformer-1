@@ -29,7 +29,7 @@ class Player extends Actor {
         this.animation.load(this.direction == Player.DIRECTION_LEFT)
     }
 
-    update(obstacles, fireBullet) {
+    update(obstacles, enemies, hitEnemy, fireBullet) {
         
         if (this.shootCooldown > 0) this.shootCooldown--
 
@@ -134,6 +134,12 @@ class Player extends Actor {
         
         this.x += dx
         this.y += dy
+        
+        enemies.forEach(enemy => {
+            if (this.collideRect(enemy)) {
+                hitEnemy(enemy)
+            }
+        })
         
         if (this.shooting && this.shootCooldown == 0) {
             console.log("shoot!")
