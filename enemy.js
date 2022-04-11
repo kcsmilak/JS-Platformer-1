@@ -1,6 +1,3 @@
-
-
-
 class Enemy extends Actor {
 
     static get JUMP_BOOST() { return 15 }
