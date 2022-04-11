@@ -9,6 +9,10 @@ class Player extends Actor {
 
     static get JUMP_COOLDOWN_MAX() { return 0 }
     static get SHOOT_COOLDOWN_MAX() { return 10 }
+    
+    static get SPEED_SLOW() { return 1 }
+    static get SPEED_NORMAL() { return 4 }
+    static get SPEED_FAST() { return 7 }
 
     
     constructor() {

@@ -12,5 +12,6 @@ class Keyboard {
     get e() { return keyIsDown(69) } //p5
     
     get space() { return keyIsDown(32) } //p5
+    get shift() { return keyIsDown(16) } //p5 TODO: this is only left shift
 
 }

@@ -51,6 +51,14 @@ class Game extends Cartridge {
             this.player.shooting = false
         }
         
+        if (this.keyboard.s) {
+            this.player.speed = Player.SPEED_SLOW
+        } else if (this.keyboard.shift) {
+            this.player.speed = Player.SPEED_FAST
+        } else {
+            this.player.speed = Player.SPEED_NORMAL
+        }
+        
 
 
     }
