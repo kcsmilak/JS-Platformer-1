@@ -1,6 +1,3 @@
-
-
-
 class Player extends Actor {
 
     static get JUMP_BOOST() { return 15 }

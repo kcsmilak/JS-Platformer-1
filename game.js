@@ -1,6 +1,3 @@
-// depends on gamemap and tilemap?
-
-
 class Game extends Cartridge {
     constructor() {
         super()
