@@ -145,7 +145,7 @@ class Player extends Actor {
         if (this.shooting && this.shootCooldown == 0) {
             console.log("shoot!")
             this.shootCooldown = Player.SHOOT_COOLDOWN_MAX
-            fireBullet(this.x, this.y, dx)
+            fireBullet(this.x, this.y, dx * this.direction + this.direction * 10)
         }        
 
         if (this.direction == Player.DIRECTION_RIGHT) {

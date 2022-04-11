@@ -6,11 +6,11 @@ class Enemy extends Actor {
 
     static get JUMP_COOLDOWN_MAX() { return 0 }
 
-    constructor() {
+    constructor(x, y) {
         super()
 
-        this.x = 220
-        this.y = 400
+        this.x = x
+        this.y = y
         this.width = 32
         this.height = 32
         this.speed = 4

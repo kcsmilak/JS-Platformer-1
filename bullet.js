@@ -3,8 +3,8 @@ class Bullet extends Actor {
         super()
         this.x = x
         this.y = y
-        this.width = 10
-        this.height = 10
+        this.width = 5
+        this.height = 5
         this.xspeed = xspeed
         this.lifetime = 30
     }

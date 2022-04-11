@@ -26,7 +26,7 @@ class GameMap {
             'https://docs.google.com/spreadsheets/d/' + mapKey 
             + '/gviz/tq?tqx=out:csv&sheet=live';
         
-        url = "mapdata.csv"
+        //url = "mapdata.csv"
         
         httpGet(url, csv => {
             for (let row = 0; row < mapData.length; row++) {
@@ -57,14 +57,14 @@ class GameMap {
                 mapData.push(datatopush);
             }
             //console.table(mapData);
-            console.log(mapData)
+            //console.log(mapData)
             this.gameDataLoaded = true
         });
 
         loadImage(base64img, tileMapImage => { 
             this.tileMapLoaded = true
             this.tileMap.loadImage(tileMapImage, 16, 16)
-            console.log('loaded')
+            //console.log('loaded')
         })
 
     }

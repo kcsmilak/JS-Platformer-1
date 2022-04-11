@@ -4,17 +4,17 @@ class Game extends Cartridge {
         this.keyboard = new Keyboard()
         this.gameMap = new GameMap()
 
-        this.player = new Player()
+        this.player = null// new Player()
         this.enemies = []
         this.tiles = []
         this.bullets = []
 
-        this.camera = new Rectangle(this.player.x,this.player.y,400,300)
+        this.camera = null
         
         this.showTileMap = false
         this.showGameMap = false
         
-        this.enemies.push(new Enemy())
+        //this.enemies.push(new Enemy())
     }
 
     preload() {
@@ -22,6 +22,8 @@ class Game extends Cartridge {
     }
 
     processInput() {
+        if (null == this.player) return
+            
         if (this.keyboard.a && ! this.keyboard.d){
             this.player.movement = Player.MOVEMENT_LEFT
         } else if (this.keyboard.d && ! this.keyboard.a) {
@@ -55,25 +57,38 @@ class Game extends Cartridge {
         } else {
             this.player.speed = Player.SPEED_NORMAL
         }
+
+        if (this.keyboard.f) {
+            //fullscreen()
+        }
+
+
+    }
+
+    processGameMap() {
+        for (let row = 0; row < this.gameMap.mapData.length; row++) {
+            for (let col = 0; col < this.gameMap.mapData[0].length; col++) {
+                let partNumber = this.gameMap.mapData[row][col]
+                let x= col*16
+                let y= row*16
+                if (partNumber > 0) {
+                    this.tiles.push(new Tile(x,y,partNumber,this.gameMap.tileMap))
+                } else if (partNumber == -1) {
+                    this.player = new Player()
+                    this.player.x = x
+                    this.player.y = y
+                    this.camera = new Rectangle(this.player.x,this.player.y,400,300)
+                } else if (partNumber == -2) {
+                    this.enemies.push(new Enemy(x, y))
+                }                
+            }
+        }
+    }
         
-
-
-    }
-    
-    fireBullet(x, y, dx) {
-    }
-    
     update() {
         if (!this.gameMap.isLoaded()) return
         if (this.tiles.length <= 0) {
-            for (let row = 0; row < this.gameMap.mapData.length; row++) {
-                for (let col = 0; col < this.gameMap.mapData[0].length; col++) {
-                    let partNumber = this.gameMap.mapData[row][col]
-                    if (partNumber <= 0) continue
-                    this.tiles.push(new Tile(col*16,row*16,partNumber,this.gameMap.tileMap))
-                    
-                }
-            }
+            this.processGameMap()
 
         }
         this.player.update(this.tiles, this.enemies, 
@@ -82,7 +97,7 @@ class Game extends Cartridge {
             },
             (x,y,dx) => {
             console.log(`fire x:${x} y:${y} dx:${dx}`)
-            let bullet = new Bullet(x,y,dx+10)
+            let bullet = new Bullet(x,y,dx)
             this.bullets.push(bullet)
         })
 
@@ -155,12 +170,14 @@ class Game extends Cartridge {
         pop()
         pop()
 
+        debug.log(touches, "touches")
+        
         debug.draw()
 
     }
 
     mouseClicked(x,y) {
-
+        debug.log(`x:${x} y:${y}`, "mouse")
     }
 
     keyPressed(keyCode) {

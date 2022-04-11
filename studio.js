@@ -40,6 +40,10 @@ class Studio extends Cartridge {
             this.gameMap.tileMap.mouseClicked(x-100,y-100)
             return
         }
+
+        let scriptkey = 'AKfycbwTh4x8aWvBrpyPae4T6OZPmcv1G0lXiSn8ll_xBHqeYlq8qvDvGHdeAOZpnZRg1CLy2g'
+        let url = 'https://script.google.com/macros/s/' + scriptkey + '/exec?name=Test';
+
         
         let val = this.gameMap.tileMap.selectedPart
     
