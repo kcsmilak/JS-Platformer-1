@@ -17,7 +17,6 @@ class AnimationRibbon {
             this.frames = image.width / frameWidth
             //this.frameImage = createGraphics(frameWidth, frameHeight)
             this.loaded = true
-            console.log("loaded")
         })         
     }
 
