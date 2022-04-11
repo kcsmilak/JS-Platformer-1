@@ -1,6 +1,10 @@
 
-let WIDTH = 640
-let HEIGHT = 480
+//let WIDTH = 640
+//let HEIGHT = 480
+
+//let WIDTH = 1280
+//let HEIGHT = 960
+
 /**
  * APP
  */
@@ -43,9 +47,13 @@ function mouseWheel(event) { //p5
 }
 
 function setup() { //p5
-    createCanvas(WIDTH, HEIGHT) //p5
+    //createCanvas(WIDTH, HEIGHT) //p5
+    createCanvas(windowWidth, windowHeight) //p5
 }
 
+function windowResized() {
+    jbox.windowResized()
+}
 
 function draw() { //p5
     jbox.processInput()

@@ -61,6 +61,10 @@ class Jbox {
 
     }
 
+    windowResized() {
+        this.cartridge.windowResized()
+    }
+
     processInput() {
         this.cartridge.processInput()
     }
