@@ -27,6 +27,10 @@ class Cartridge {
 
     }
 
+    windowResized() {
+        console.log('windowResized not implemtned')
+    }
+    
     keyPressed(keyCode) {
         console.log('keyPressed not implemented')
 

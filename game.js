@@ -13,6 +13,10 @@ class Game extends Cartridge {
         
         this.showTileMap = false
         this.showGameMap = false
+
+        this.zoomLevel = 1
+
+        this.windowResized()
         
         //this.enemies.push(new Enemy())
     }
@@ -59,7 +63,7 @@ class Game extends Cartridge {
         }
 
         if (this.keyboard.f) {
-            //fullscreen()
+            fullscreen(true)
         }
 
 
@@ -83,6 +87,12 @@ class Game extends Cartridge {
                 }                
             }
         }
+    }
+
+    windowResized() {
+        console.log(`window resized w:${windowWidth} h:${windowHeight}`)
+        resizeCanvas(windowWidth, windowHeight)
+        this.zoomLevel = windowWidth/320
     }
         
     update() {
@@ -146,7 +156,7 @@ class Game extends Cartridge {
 
 
         push()
-        scale(1.5)
+        scale(this.zoomLevel)
         translate(-this.camera.x, -this.camera.y)
         //
         this.player.draw()
