@@ -22,11 +22,11 @@ class GameMap {
         let testKey = 
             '1wVyI5wAqiorXbmbk-pqoiOcMSMfH-7BjIoVFWcSx-38';
         let mapKey = testKey;
-        let url = 
+        let url_net = 
             'https://docs.google.com/spreadsheets/d/' + mapKey 
             + '/gviz/tq?tqx=out:csv&sheet=live';
         
-        //url = "mapdata.csv"
+        let url = "http://localhost:8000/mapdata.csv"
         
         httpGet(url, csv => {
             for (let row = 0; row < mapData.length; row++) {

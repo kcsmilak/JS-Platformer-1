@@ -17,7 +17,11 @@ class Enemy extends Actor {
         this.jumping = false
         this.airborn = false
         this.jumpCooldown = 0
+        
+        //this.movement = Actor.MOVEMENT_LEFT
+        //this.direction = Player.DIRECTION_LEFT
 
+        //this.animation = new AnimatedCharacter("Ninja Frog") // Mask Dude
         this.animation = new AnimatedCharacter("Mask Dude")
         this.animation.load(this.direction == Player.DIRECTION_LEFT)
     }
@@ -136,8 +140,17 @@ class Enemy extends Actor {
             this.animation.setAnimation(AnimatedCharacter.IDLE)
         }
         
-        if (abs(this.x - player.x) < 50) {
+        if ( ( abs(this.x - player.x) < 32 * 5) && 
+             ( abs(this.y - player.y) < 32) ) {
             this.animation.setAnimation(AnimatedCharacter.RUN)
+            if(this.x < player.x) {
+                this.direction = Player.DIRECTION_RIGHT
+                this.movement = Actor.MOVEMENT_RIGHT
+            } else {
+                this.direction = Player.DIRECTION_LEFT
+                this.movement = Actor.MOVEMENT_LEFT
+            }
+            
         }
         
 

@@ -81,7 +81,7 @@ class Game extends Cartridge {
                     this.player = new Player()
                     this.player.x = x
                     this.player.y = y
-                    this.camera = new Rectangle(this.player.x,this.player.y,400,300)
+                    this.camera = new Rectangle(this.player.x,this.player.y,320,200)
                 } else if (partNumber == -2) {
                     this.enemies.push(new Enemy(x, y))
                 }                
@@ -144,7 +144,8 @@ class Game extends Cartridge {
         if (this.camera.top < 0) this.camera.top = 0        
         
         if (this.camera.x < 0) this.camera.x = 0
-        let max = 900
+        let max = this.gameMap.mapData.length * 16
+        max = 944+this.player.width*1.5
         if (this.camera.right > max) this.camera.right = max        
         
     }
@@ -177,6 +178,7 @@ class Game extends Cartridge {
         strokeWeight(3)
         fill(0,0,0,0)
         //rect(this.camera.x, this.camera.y, this.camera.width, this.camera.height)
+        this.camera.draw();
         pop()
         pop()
 

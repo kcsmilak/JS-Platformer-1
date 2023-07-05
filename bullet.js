@@ -3,8 +3,8 @@ class Bullet extends Actor {
         super()
         this.x = x
         this.y = y
-        this.width = 5
-        this.height = 5
+        this.width = 3
+        this.height = 3
         this.xspeed = xspeed
         this.lifetime = 30
     }
@@ -32,6 +32,7 @@ class Bullet extends Actor {
     draw() {
         if (this.lifetime < 0) return
         //console.log(`alive x:${this.x} y:${this.y} xs:${this.xspeed}`)
+        fill(100,100,100)
         super.draw()
     }
 }

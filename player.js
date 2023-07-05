@@ -177,6 +177,7 @@ class Player extends Actor {
         debug.log(`${this.x}`, "player.x")
         debug.log(`${this.y}`, "player.y")
         debug.log(`${this.direction}`, "player.d")
+        debug.log(`${this.width}`, "player.width")
 
     }
 
